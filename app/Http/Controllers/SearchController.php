@@ -78,7 +78,7 @@ class SearchController extends Controller
 
             $data = array();
             $data['q'] = $input['q'];
-            $data['time_01'] = ($input['time_01']) ? floatval($input['time_01']) : 15.0;
+            $data['time_01'] = $input['time_01'] ? floatval($input['time_01']) : 15.0;
             $data['time_02'] = $input['time_02'] ? floatval($input['time_02']) : 120.0;
             $data['time_03'] = $input['time_03'] ? floatval($input['time_03']) : 30.0;
             $data['time_04'] = $input['time_04'] ? floatval($input['time_04']) : 150.0;
