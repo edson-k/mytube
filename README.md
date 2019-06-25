@@ -28,6 +28,8 @@ add youtube api key
 ```
 YOUTUBE_API_KEY=<your_key>
 ```
+## Create Laravel key
+`$ php artisan key:generate`
 
 ## RUN
 `$ php artisan serve`
