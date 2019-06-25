@@ -61,6 +61,10 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+
+            b {
+                font-weight: bold !important;
+            }
         </style>
     </head>
     <body>
@@ -70,6 +74,12 @@
                 <div class="title m-b-md">
                     myTUBE
                 </div>
+
+                @if ($msg)
+                    <div class="alert alert-danger" role="alert">
+                        <b>ATENÇÃO:</b> {{$msg}}
+                    </div>
+                @endif
 
                 <form method="POST" action="./">
                     {{ csrf_field() }}
