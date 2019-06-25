@@ -34,6 +34,7 @@ class SearchController extends Controller
             // Set default parameters
             $params = [
                 'q'             => $input['q'],
+                'type'          => 'video',
                 'part'          => 'id, snippet',
                 'maxResults'    => 50
             ];
@@ -79,24 +80,18 @@ class SearchController extends Controller
         $totalTime = 0;
         $cont=0;
 
-        $searchResponse = $search;
-        var_dump(sizeof($search));
-        foreach ($searchResponse as $searchResult) {
-            switch ($searchResult->id->kind) {
-                case 'youtube#video':
-                    $expirationVideo = 60 * 24 * 366; //minutos * horas * dias
-                    $videoInfo = Cache::remember('video_'.$searchResult->id->videoId, $expirationVideo, function() use ($searchResult) {
-                        return Youtube::getVideoInfo($searchResult->id->videoId);
-                    });
-                    $totalTime +=ISO8601ToSeconds($videoInfo->contentDetails->duration);
-                    $words .= $searchResult->snippet->title . " " . $searchResult->snippet->description . " ";
-                    $videosList[$cont]['videoId'] = $searchResult->id->videoId;
-                    $videosList[$cont]['title'] = $searchResult->snippet->title;
-                    $videosList[$cont]['description'] = $searchResult->snippet->description;
-                    $videosList[$cont]['duration'] = ISO8601ToSeconds($videoInfo->contentDetails->duration)/60;
-                    $cont++;
-                    break;
-            }
+        foreach ($search as $searchResult) {
+            $expirationVideo = 60 * 24 * 366; //minutos * horas * dias
+            $videoInfo = Cache::remember('video_'.$searchResult->id->videoId, $expirationVideo, function() use ($searchResult) {
+                return Youtube::getVideoInfo($searchResult->id->videoId);
+            });
+            $totalTime +=ISO8601ToSeconds($videoInfo->contentDetails->duration);
+            $words .= $searchResult->snippet->title . " " . $searchResult->snippet->description . " ";
+            $videosList[$cont]['videoId'] = $searchResult->id->videoId;
+            $videosList[$cont]['title'] = $searchResult->snippet->title;
+            $videosList[$cont]['description'] = $searchResult->snippet->description;
+            $videosList[$cont]['duration'] = ISO8601ToSeconds($videoInfo->contentDetails->duration)/60;
+            $cont++;
         }
 
         $totalTime = secondsToTime($totalTime);
@@ -111,42 +106,35 @@ class SearchController extends Controller
         $time_07 = $input['time_07'] ? floatval($input['time_07']) : 90.0;
 
         $time_controll = 0;
-        $cont=1;
+        $contTime = 1;
+        $contDia = 1;
         $tTime = 0;
+
         for($i=0; $i<sizeof($videosList); $i++) {
-            if( ($time_controll+$videosList[$i]['duration']) > ${"time_0".$cont} && $i == 0) {
-                echo "<h3>Dia 0".$cont." - ".${"time_0".$cont}." min</h3>";
-                echo "<li>nenhum video para este dia!</li>";
+            if($time_controll == 0) {
+                echo "<h3>Dia ".(($contDia<10)?'0'.$contDia:$contDia)." - ".${"time_0".$contTime}." min</h3>";
             }
-            if( ($time_controll+$videosList[$i]['duration']) <= ${"time_0".$cont}) {
-                if($time_controll == 0) {
-                    echo "<h3>Dia 0".$cont." - ".${"time_0".$cont}." min</h3>";
-                }
+            if( ($time_controll+$videosList[$i]['duration']) <= ${"time_0".$contTime}) {
                 $time_controll += $videosList[$i]['duration'];
                 echo sprintf('<li><a href="https://www.youtube.com/watch?v='.$videosList[$i]['videoId'].'" target="_blank">%s</a> (%s) - %s</li>',
                 $videosList[$i]['title'], $videosList[$i]['videoId'], gmdate("H:i:s",($videosList[$i]['duration']*60)));
                 $tTime += $videosList[$i]['duration']*60;
             } else {
-                $time_controll = 0;
-                if($cont<7) { $cont++; } else { break; }
-                if( ($time_controll+$videosList[$i]['duration']) <= ${"time_0".$cont}) {
-                    if($time_controll == 0) {
-                        echo "<h3>Dia 0".$cont." - ".${"time_0".$cont}." min</h3>";
-                    }
-                    $time_controll += $videosList[$i]['duration'];
-                    echo sprintf('<li><a href="https://www.youtube.com/watch?v='.$videosList[$i]['videoId'].'" target="_blank">%s</a> (%s) - %s</li>',
-                    $videosList[$i]['title'], $videosList[$i]['videoId'], gmdate("H:i:s",($videosList[$i]['duration']*60)));
-                } else {
-                    echo "<h3>Dia 0".$cont." - ".${"time_0".$cont}." min</h3>";
-                    echo "<li>nenhum video para este dia!</li>";
-                    $time_controll = 0;
-                    if($cont<7) { $cont++; } else { break; }
+                if($time_controll == 0) {
+                   echo "<li>nenhum video para este dia!</li>";
                 }
+                $time_controll = 0;
+                $contDia++;
+                if($contTime<7) { $contTime++; } else { $contTime = 1; }                
+                $i--;
             }
         }
         $tTime = secondsToTime($tTime);
         echo "<h3>Total Time</h3>
         <ul><li>".$tTime."</li></ul>";
+
+        echo "<h3>Total Dias</h3>
+        <ul><li>".$contDia." dias</li></ul>";
         
         echo "<h3>5 Palavras mais utilizadas</h3><ul>";
         foreach (find_most_used_words($words) as $value) {
