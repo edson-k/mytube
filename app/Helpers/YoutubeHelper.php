@@ -15,7 +15,7 @@ if (!function_exists('secondsToTime')) {
     function secondsToTime($seconds) {
         $dtF = new \DateTime('@0');
         $dtT = new \DateTime("@$seconds");
-        $result = $dtF->diff($dtT)->format('%a days, %h:%i:%s');
+        $result = $dtF->diff($dtT)->format('%a dias, %h:%i:%s');
         $exp = explode(', ', $result);
         $time = explode(':', $exp[1]);
         return $exp[0].", ".(($time[0]<10)?"0".$time[0]:$time[0]).":".(($time[1]<10)?"0".$time[1]:$time[1]).":".(($time[2]<10)?"0".$time[2]:$time[2]);
