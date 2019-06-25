@@ -46,5 +46,5 @@ YOUTUBE_API_KEY=<your_key>
 ## Heroku - Cloud Application Platform
 https://www.heroku.com
 
-## Keroku - Redis - Database for cache free
+## Heroku - Redis - Database for cache free
 https://elements.heroku.com/addons/heroku-redis
