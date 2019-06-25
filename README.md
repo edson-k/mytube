@@ -32,6 +32,13 @@ YOUTUBE_API_KEY=<your_key>
 ## RUN
 `$ php artisan serve`
 
+## Files
+[mytube/app/Helpers/YoutubeHelper.php](https://github.com/edson-k/mytube/blob/master/app/Helpers/YoutubeHelper.php)
+[mytube/app/Http/Controllers/SearchController.php](https://github.com/edson-k/mytube/blob/master/app/Http/Controllers/SearchController.php)
+[mytube/routes/web.php](https://github.com/edson-k/mytube/blob/master/routes/web.php)
+[mytube/resources/views/search.blade.php](https://github.com/edson-k/mytube/blob/master/resources/views/search.blade.php)
+[mytube/resources/views/result.blade.php](https://github.com/edson-k/mytube/blob/master/resources/views/result.blade.php)
+
 ## Heroku - Cloud Application Platform
 https://www.heroku.com
 
