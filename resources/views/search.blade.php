@@ -129,7 +129,7 @@
                     </div>
                     <br/>
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search for..." value="Android">
+                        <input type="text" name="q" class="form-control" placeholder="Pesquisar" value="Android">
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit">buscar</button>
                         </span>
