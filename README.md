@@ -26,7 +26,7 @@ https://ek-mytube.herokuapp.com/
 
 add youtube api key
 ```
-`YOUTUBE_API_KEY=<your_key>`
+YOUTUBE_API_KEY=<your_key>
 ```
 
 ## RUN
