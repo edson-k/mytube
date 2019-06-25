@@ -61,7 +61,7 @@
                     myTUBE
                 </div>
                 <div>
-                    Resultado da busca por: <b>{{$data['q']}}</b> exibindo <b>{{sizeof($data['videosList'])}}</b> resultados.
+                    Resultado da busca por: <b>{{$data['q']}}</b> exibindo <b>{{sizeof($data['videosList'])}}</b> resultados de 200.
                     <br/><br/>
                     <button class="btn btn-danger" onclick="document.location.href='/';"><< voltar</button>
                     <br/><br/>
