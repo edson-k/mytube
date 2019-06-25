@@ -71,19 +71,6 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
 
             <div class="content">
                 <div class="title m-b-md">
@@ -128,8 +115,15 @@
                         <input type="text" name="time_07" class="form-control" placeholder="90">
                         <span class="input-group-addon" id="basic-addon1">min.</span>
                     </div>
-                    <br>
-                    <label for="basic-url">Defina sua busca</label>
+                    <br/>
+                    <br/>
+                    <label for="basic-url">Defina sua busca e filtro</label>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Ignorar palavras menores que</span>
+                        <input type="text" name="q_start" class="form-control" placeholder="4">
+                        <span class="input-group-addon" id="basic-addon1">nas palavras mais utilizadas</span>
+                    </div>
+                    <br/>
                     <div class="input-group">
                         <input type="text" name="q" class="form-control" placeholder="Search for..." value="Android">
                         <span class="input-group-btn">

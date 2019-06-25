@@ -77,7 +77,6 @@ class SearchController extends Controller
 
         $words = '';
         $videosList = array();
-        $totalTime = 0;
         $cont=0;
 
         foreach ($search as $searchResult) {
@@ -85,7 +84,6 @@ class SearchController extends Controller
             $videoInfo = Cache::remember('video_'.$searchResult->id->videoId, $expirationVideo, function() use ($searchResult) {
                 return Youtube::getVideoInfo($searchResult->id->videoId);
             });
-            $totalTime +=ISO8601ToSeconds($videoInfo->contentDetails->duration);
             $words .= $searchResult->snippet->title . " " . $searchResult->snippet->description . " ";
             $videosList[$cont]['videoId'] = $searchResult->id->videoId;
             $videosList[$cont]['title'] = $searchResult->snippet->title;
@@ -94,56 +92,18 @@ class SearchController extends Controller
             $cont++;
         }
 
-        $totalTime = secondsToTime($totalTime);
+        $data = array();
+        $data['videosList'] = $videosList;
+        $data['q'] = $input['q'];
+        $data['time_01'] = ($input['time_01']) ? floatval($input['time_01']) : 15.0;
+        $data['time_02'] = $input['time_02'] ? floatval($input['time_02']) : 120.0;
+        $data['time_03'] = $input['time_03'] ? floatval($input['time_03']) : 30.0;
+        $data['time_04'] = $input['time_04'] ? floatval($input['time_04']) : 150.0;
+        $data['time_05'] = $input['time_05'] ? floatval($input['time_05']) : 20.0;
+        $data['time_06'] = $input['time_06'] ? floatval($input['time_06']) : 40.0;
+        $data['time_07'] = $input['time_07'] ? floatval($input['time_07']) : 90.0;
+        $data['find_most_used_words'] = find_most_used_words($words, ($input['q_start']?$input['q_start']:4));
 
-        //15, 120, 30, 150, 20, 40, 90
-        $time_01 = $input['time_01'] ? floatval($input['time_01']) : 15.0;
-        $time_02 = $input['time_02'] ? floatval($input['time_02']) : 120.0;
-        $time_03 = $input['time_03'] ? floatval($input['time_03']) : 30.0;
-        $time_04 = $input['time_04'] ? floatval($input['time_04']) : 150.0;
-        $time_05 = $input['time_05'] ? floatval($input['time_05']) : 20.0;
-        $time_06 = $input['time_06'] ? floatval($input['time_06']) : 40.0;
-        $time_07 = $input['time_07'] ? floatval($input['time_07']) : 90.0;
-
-        $time_controll = 0;
-        $contTime = 1;
-        $contDia = 1;
-        $tTime = 0;
-
-        for($i=0; $i<sizeof($videosList); $i++) {
-            if($time_controll == 0) {
-                echo "<h3>Dia ".(($contDia<10)?'0'.$contDia:$contDia)." - ".${"time_0".$contTime}." min</h3>";
-            }
-            if( ($time_controll+$videosList[$i]['duration']) <= ${"time_0".$contTime}) {
-                $time_controll += $videosList[$i]['duration'];
-                echo sprintf('<li>'.(($i<10)?'0'.$i:$i).' - <a href="https://www.youtube.com/watch?v='.$videosList[$i]['videoId'].'" target="_blank">%s</a> (%s) - %s</li>',
-                $videosList[$i]['title'], $videosList[$i]['videoId'], gmdate("H:i:s",($videosList[$i]['duration']*60)));
-                $tTime += $videosList[$i]['duration']*60;
-            } else {
-                if($time_controll == 0) {
-                   echo "<li>nenhum video para este dia!</li>";
-                }
-                $time_controll = 0;
-                $contDia++;
-                if($contTime<7) { $contTime++; } else { $contTime = 1; }                
-                $i--;
-            }
-        }
-        $tTime = secondsToTime($tTime);
-        echo "<h3>Tempo total de videos de todos os dias</h3>
-        <ul><li>".$tTime."</li></ul>";
-
-        echo "<h3>Total Dias</h3>
-        <ul><li>".$contDia." dias</li></ul>";
-        
-        echo "<h3>5 Palavras mais utilizadas</h3><ul>";
-        foreach (find_most_used_words($words) as $value) {
-            echo "<li>".$value['word']."</li>";
-        }
-        echo "</ul>";
-
-        // echo "<pre>";
-        // var_dump();
-        // echo "</pre>";
+        return view('result', array('data' => $data));
     }
 }

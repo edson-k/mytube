@@ -40,7 +40,7 @@ if(!function_exists('sanitizeString')) {
 }
 
 if(!function_exists('find_most_used_words')) {
-    function find_most_used_words($words, $ignore=true, $start=4, $qts=4) {
+    function find_most_used_words($words, $start=4, $qts=4, $ignore=true) {
         $teste = array_count_values(str_word_count(strtolower($words), 1, "óéíúçáã"));
         arsort($teste);
         $cont=0;
