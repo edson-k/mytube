@@ -62,6 +62,9 @@
                 </div>
                 <div>
                     Resultado da busca por: <b>{{$data['q']}}</b> exibindo <b>{{sizeof($data['videosList'])}}</b> resultados.
+                    <br/><br/>
+                    <button class="btn btn-danger" onclick="document.location.href='/';"><< voltar</button>
+                    <br/><br/>
                 </div>
             </div>
             
@@ -155,6 +158,10 @@
                 </div>
                 <br/>
                 <br/>
+                <div class="content">
+                    <button class="btn btn-danger" onclick="document.location.href='/';"><< voltar</button>
+                    <br/><br/>
+                </div>
             </div>
         </div>
     </body>
