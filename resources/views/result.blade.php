@@ -120,42 +120,50 @@
                         @endif
                     @endif
                 @endfor
-                        </ul>
-                    </div>
-                </div>
 
-                @php  $tTime = secondsToTime($tTime); @endphp
-                <br/>
-                <div class="card">
-                    <div class="card-block">
-                        <h3>Tempo total de videos de todos os dias</h3>
-                        <ul>
-                            <li>{{$tTime}}</li>
-                        </ul>
+                @if (sizeof($data['videosList']) > 0)
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <br/>
 
-                <div class="card">
-                    <div class="card-block">
-                        <h3>Total de dias</h3>
-                        <ul>
-                            <li>{{$contDia}} dias</li>
-                        </ul>
+                    @php  $tTime = secondsToTime($tTime); @endphp
+                    <br/>
+                    <div class="card">
+                        <div class="card-block">
+                            <h3>Tempo total de videos de todos os dias</h3>
+                            <ul>
+                                <li>{{$tTime}}</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                    <br/>
 
-                <br/>
-                <div class="card">
-                    <div class="card-block">
-                        <h3>5 Palavras mais utilizadas</h3>
-                        <ul>
-                            @foreach ($data['find_most_used_words'] as $value) 
-                                <li>{{$value['word']}}</li>
-                            @endforeach
-                        </ul>
+                    <div class="card">
+                        <div class="card-block">
+                            <h3>Total de dias</h3>
+                            <ul>
+                                <li>{{$contDia}} dias</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+
+                    <br/>
+                    <div class="card">
+                        <div class="card-block">
+                            <h3>5 Palavras mais utilizadas</h3>
+                            <ul>
+                                @foreach ($data['find_most_used_words'] as $value) 
+                                    <li>{{$value['word']}}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @else
+                    <div class="alert alert-info" role="alert">
+                        nenhum resultado encontrado para sua busca!
+                    </div>
+                @endif
+
                 <br/>
                 <br/>
                 <div class="content">
