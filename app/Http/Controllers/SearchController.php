@@ -116,7 +116,7 @@ class SearchController extends Controller
             }
             if( ($time_controll+$videosList[$i]['duration']) <= ${"time_0".$contTime}) {
                 $time_controll += $videosList[$i]['duration'];
-                echo sprintf('<li><a href="https://www.youtube.com/watch?v='.$videosList[$i]['videoId'].'" target="_blank">%s</a> (%s) - %s</li>',
+                echo sprintf('<li>'.(($i<10)?'0'.$i:$i).' - <a href="https://www.youtube.com/watch?v='.$videosList[$i]['videoId'].'" target="_blank">%s</a> (%s) - %s</li>',
                 $videosList[$i]['title'], $videosList[$i]['videoId'], gmdate("H:i:s",($videosList[$i]['duration']*60)));
                 $tTime += $videosList[$i]['duration']*60;
             } else {
@@ -130,7 +130,7 @@ class SearchController extends Controller
             }
         }
         $tTime = secondsToTime($tTime);
-        echo "<h3>Total Time</h3>
+        echo "<h3>Tempo total de videos de todos os dias</h3>
         <ul><li>".$tTime."</li></ul>";
 
         echo "<h3>Total Dias</h3>
