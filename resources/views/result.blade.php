@@ -119,13 +119,14 @@
                             @php $contTime = 1; @endphp
                         @endif
                     @endif
+                    @if ($i == (sizeof($data['videosList'])-1))
+                                </ul>
+                            </div>
+                        </div>
+                    @endif
                 @endfor
 
                 @if (sizeof($data['videosList']) > 0)
-                            </ul>
-                        </div>
-                    </div>
-
                     @php  $tTime = secondsToTime($tTime); @endphp
                     <br/>
                     <div class="card">
